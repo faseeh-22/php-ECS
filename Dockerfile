@@ -4,10 +4,12 @@ FROM php:8.1-apache
 # Copy the current directory contents into the container at /var/www/html
 COPY . /var/www/html
 
-# Enable Apache mod_rewrite (for Alpine-based Apache)
+# Set Apache configurations (adjust paths as per your image's setup)
 RUN sed -i 's/#LoadModule rewrite_module/LoadModule rewrite_module/g' /etc/apache2/httpd.conf \
-    && sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/httpd.conf \
-    && mkdir -p /run/apache2
+    && sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/httpd.conf
+
+# Create necessary directories (if required)
+RUN mkdir -p /run/apache2
 
 # Set the working directory to /var/www/html
 WORKDIR /var/www/html
