@@ -1,18 +1,5 @@
 # Use the official PHP image with Apache, based on Alpine
-FROM php:latest-apache
-
-# Install necessary dependencies and PHP extensions
-RUN apk add --no-cache \
-    bash \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    libwebp-dev \
-    zlib-dev \
-    libxpm-dev \
-    freetype-dev \
-    oniguruma-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install gd mysqli pdo pdo_mysql mbstring
+FROM php:8.1-apache
 
 # Copy the current directory contents into the container at /var/www/html
 COPY . /var/www/html
@@ -31,4 +18,4 @@ RUN chown -R www-data:www-data /var/www/html
 EXPOSE 80
 
 # Run Apache in the foreground
-CMD ["httpd", "-D", "FOREGROUND"]
+CMD ["apache2-foreground"]
