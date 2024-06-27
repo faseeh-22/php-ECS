@@ -18,15 +18,15 @@
         AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
         AWS_DEFAULT_REGION: "{{ aws_region }}"
       ignore_errors: yes  # Ignore errors if the cluster already exists
+
     - name: Create ECS Task Definition
       ecs_taskdefinition:
         region: "{{ aws_region }}"
         family: "{{ ecs_task_definition_name }}"
         network_mode: awsvpc
-        AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
-        AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
+        access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
         execution_role_arn: "arn:aws:iam::736116236436:role/ecsTaskExecutionRole"
-       ## task_role_arn: "arn:aws:iam::736116236436:role/ecsTaskRole"
         containers:
           - name: "{{ ecs_container_name }}"
             image: "{{ ecs_container_image }}"
@@ -37,9 +37,11 @@
             cpu: 100
         state: present
       register: task_definition
+
     - name: Register ECS Task Definition
       debug:
         var: task_definition
+
     - name: Create ECS Service
       ecs_service:
         region: "{{ aws_region }}"
@@ -63,6 +65,7 @@
             - "sg-0a85d937517e6a7b1"
         state: present
       register: service_result
+
     - name: Register ECS Service
       debug:
         var: service_result
