@@ -3,8 +3,6 @@
   hosts: localhost
   gather_facts: False
   vars:
-    aws_access_key: "AWS_ACCESS_KEY_ID"
-    aws_secret_key: "AWS_SECRET_ACCESS_KEY"
     aws_region: "us-east-1"
     ecs_cluster_name: "test-cluster"
     ecs_task_definition_name: "ansible-task-definition"
@@ -16,8 +14,8 @@
     - name: Create ECS Cluster
       command: "aws ecs create-cluster --cluster-name {{ ecs_cluster_name }}"
       environment:
-        AWS_ACCESS_KEY_ID: "{{ aws_access_key }}"
-        AWS_SECRET_ACCESS_KEY: "{{ aws_secret_key }}"
+        AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
         AWS_DEFAULT_REGION: "{{ aws_region }}"
       ignore_errors: yes  # Ignore errors if the cluster already exists
     - name: Create ECS Task Definition
