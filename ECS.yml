@@ -23,8 +23,8 @@
         region: "{{ aws_region }}"
         family: "{{ ecs_task_definition_name }}"
         network_mode: awsvpc
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
+        AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
         execution_role_arn: "arn:aws:iam::736116236436:role/ecsTaskExecutionRole"
        ## task_role_arn: "arn:aws:iam::736116236436:role/ecsTaskRole"
         containers:
