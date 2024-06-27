@@ -11,6 +11,16 @@
     ecs_container_image: "php:latest"
     task_definition: null
   tasks:
+    - name: Ensure boto3 is installed
+      pip:
+        name: boto3
+        state: present
+    
+    - name: Ensure botocore is installed
+      pip:
+        name: botocore
+        state: present
+
     - name: Create ECS Cluster
       command: "aws ecs create-cluster --cluster-name {{ ecs_cluster_name }}"
       environment:
