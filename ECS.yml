@@ -63,7 +63,7 @@
         wait: yes
         deployment_configuration:
           maximum_percent: 150
-          minimum_healthy_percent: 100
+          minimum_healthy_percent: 70
         network_configuration:
           subnets:
             - "subnet-095be323bd97dc9a4"
