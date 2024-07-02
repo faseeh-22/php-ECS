@@ -41,7 +41,7 @@
           - name: "{{ ecs_container_name }}"
             image: "{{ ecs_container_image }}"
             portMappings:
-              - containerPort: 80
+              - containerPort: 8080  # Assigning port 8080 to the container
             memoryReservation: 100
             memory: 250
             cpu: 100
