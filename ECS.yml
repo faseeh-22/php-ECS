@@ -41,7 +41,7 @@
           - name: "{{ ecs_container_name }}"
             image: "{{ ecs_container_image }}"
             portMappings:
-              - containerPort: 8080  # Assigning port 8080 to the container
+              - containerPort: 80
             memoryReservation: 100
             memory: 250
             cpu: 100
@@ -62,8 +62,8 @@
         desired_count: 1  # Set the desired count to 1 to start one task
         wait: yes
         deployment_configuration:
-          maximum_percent: 150
-          minimum_healthy_percent: 100
+          maximum_percent: 100
+          minimum_healthy_percent: 50
         network_configuration:
           subnets:
             - "subnet-095be323bd97dc9a4"
