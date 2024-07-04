@@ -5,9 +5,9 @@
   vars:
     aws_region: "us-east-1"
     ecs_cluster_name: "test-cluster"
-    ecs_task_definition_name: "ansible-task-definition"
-    ecs_service_name: "ansible-ecs-service"
-    ecs_container_name: "ansible_php"
+    ecs_task_definition_name: "php-ECS5-task-definition"
+    ecs_service_name: "php-ecs5-service"
+    ecs_container_name: "php-ECS5"
     ecs_container_image: "736116236436.dkr.ecr.us-east-1.amazonaws.com/php-img:latest"
     task_definition: null
   tasks:
