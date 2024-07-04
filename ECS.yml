@@ -49,7 +49,7 @@
         state: present
       register: task_definition
 
-    - name: Register ECS Task Definition
+    - name: Debug Task Definition
       debug:
         var: task_definition
 
@@ -58,7 +58,7 @@
         region: "{{ aws_region }}"
         cluster: "{{ ecs_cluster_name }}"
         service: "{{ ecs_service_name }}"
-        task_definition: "{{ ecs_task_definition_name }}:{{ task_definition.taskDefinition.revision }}"
+        task_definition: "{{ task_definition.taskDefinitionArn }}"
         launch_type: EC2
         desired_count: 1  # Set the desired count to 1 to start one task
         wait: yes
