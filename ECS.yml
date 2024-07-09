@@ -4,6 +4,7 @@
   gather_facts: False
   collections:
     - community.aws
+    - amazon.aws
   vars:
     aws_region: "us-east-1"
     ecs_cluster_name: "test-cluster"
@@ -55,7 +56,7 @@
         var: task_definition
 
     - name: Ensure security group allows inbound HTTP traffic
-      community.aws.ec2_group:
+      amazon.aws.ec2_group:
         name: "sg-0a85d937517e6a7b1"
         region: "{{ aws_region }}"
         rules:
