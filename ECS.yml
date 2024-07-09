@@ -65,15 +65,7 @@
         deployment_configuration:
           maximum_percent: 150
           minimum_healthy_percent: 100
-        assign_public_ip: ENABLED  # Ensure public IP assignment
-        security_groups:
-          - "sg-0a85d937517e6a7b1"
-        subnets:
-          - "subnet-095be323bd97dc9a4"
-          - "subnet-0c8e1eaaaff0a0726"
-          - "subnet-0e3db30d9fdcb6414"
-          - "subnet-04b85618616f2da9d"
-          - "subnet-0925766f7ff391b44"
+        wait: yes  # Wait for service deployment to complete
       register: service_result
 
     - name: Register ECS Service
