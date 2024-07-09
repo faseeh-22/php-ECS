@@ -2,8 +2,10 @@
 - name: Deploy ECS Task and Service with EC2
   hosts: localhost
   gather_facts: False
+  collections:
+    - community.aws
   vars:
-    aws_region: "{{ lookup('env', 'AWS_REGION') }}"
+    aws_region: "us-east-1"
     ecs_cluster_name: "test-cluster"
     ecs_task_definition_name: "php-ECS5-task-definition"
     ecs_service_name: "php-ecs5-service"
@@ -24,18 +26,18 @@
     - name: Create ECS Cluster
       command: "aws ecs create-cluster --cluster-name {{ ecs_cluster_name }}"
       environment:
-        AWS_ACCESS_KEY_ID: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-        AWS_SECRET_ACCESS_KEY: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+        AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
         AWS_DEFAULT_REGION: "{{ aws_region }}"
       ignore_errors: yes  # Ignore errors if the cluster already exists
 
     - name: Create ECS Task Definition
-      ecs_taskdefinition:
+      community.aws.ecs_taskdefinition:
         region: "{{ aws_region }}"
         family: "{{ ecs_task_definition_name }}"
         network_mode: awsvpc
-        access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-        secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+        access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
         execution_role_arn: "arn:aws:iam::736116236436:role/ecsTaskExecutionRole"
         containers:
           - name: "{{ ecs_container_name }}"
@@ -53,7 +55,7 @@
         var: task_definition
 
     - name: Ensure security group allows inbound HTTP traffic
-      ec2_group:
+      community.aws.ec2_group:
         name: "sg-0a85d937517e6a7b1"
         region: "{{ aws_region }}"
         rules:
@@ -65,7 +67,7 @@
         purge_rules: no
 
     - name: Create ECS Service
-      ecs_service:
+      community.aws.ecs_service:
         region: "{{ aws_region }}"
         cluster: "{{ ecs_cluster_name }}"
         service: "{{ ecs_service_name }}"
@@ -99,13 +101,13 @@
       register: ecs_container_instances
 
     - name: Get details of ECS container instances
-      community.aws.ec2_instance_facts:
+      amazon.aws.ec2_instance_info:
         instance_ids: "{{ ecs_container_instances.instances | map(attribute='ec2_instance_id') | list }}"
         region: "{{ aws_region }}"
       register: ec2_instances
 
     - name: Associate Elastic IPs with EC2 instances
-      community.aws.ec2_eip:
+      amazon.aws.ec2_eip:
         region: "{{ aws_region }}"
         instance_id: "{{ item.id }}"
         state: present
