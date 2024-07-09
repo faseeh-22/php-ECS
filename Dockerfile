@@ -1,19 +1,21 @@
-# Use an official PHP image with Apache
-FROM php:7.4-apache
-# Install any necessary dependencies
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd
+# Use the official PHP image with Apache
+FROM php:8.1-apache
+
 # Copy the current directory contents into the container at /var/www/html
-COPY . /var/www/html/
-# Set the working directory
+COPY . /var/www/html
+
+# Enable Apache mod_rewrite and AllowOverride
+RUN a2enmod rewrite && \
+    sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+
+# Set the working directory to /var/www/html
 WORKDIR /var/www/html
-# Set the server name to suppress the warning
-RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
-# Expose port 80 to the outside world
+
+# Ensure the necessary permissions
+RUN chown -R www-data:www-data /var/www/html
+
+# Expose port 80
 EXPOSE 80
-# Start Apache in the foreground
+
+# Run Apache in the foreground
 CMD ["apache2-foreground"]
