@@ -19,7 +19,7 @@
       ecs_taskdefinition:
         state: present
         family: php-ECS5-task-definition
-        container_definitions:
+        containerDefinitions:    # Corrected parameter name
           - name: php-ECS5
             image: 736116236436.dkr.ecr.us-east-1.amazonaws.com/php-img:latest
             cpu: 256
@@ -32,7 +32,7 @@
               logDriver: awslogs
               options:
                 awslogs-group: php-ecs-log-group
-                awslogs-region: php-ecs-east-1
+                awslogs-region: us-east-1    # Corrected AWS region parameter
                 awslogs-stream-prefix: php-ecs-stream-prefix
       register: task_definition
 
