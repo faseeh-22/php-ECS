@@ -41,7 +41,7 @@
         state: present
         name: php-ecs5-service
         cluster: test-cluster
-        task_definition: "{{ task_definition.taskDefinitionArn }}"  # Corrected attribute name
+        task_definition: "{{ task_definition.taskdefinition.taskDefinitionArn }}"
         desired_count: 1
         launch_type: EC2
         wait: yes
