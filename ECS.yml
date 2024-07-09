@@ -50,4 +50,4 @@
 
     - name: Output EC2 Instance Public IP
       debug:
-        msg: "Access your service at http://{{ hostvars[groups['ECS Instance - test-cluster'][0]]['public_ip_address'] }}"
+        msg: "Access your service at http://{{ hostvars[groups['ECS Instance - test-cluster'][0]]['ec2_instance']['public_ip_address'] }}"
