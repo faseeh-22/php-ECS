@@ -10,6 +10,14 @@
     ecs_container_name: "php-ECS5"
     ecs_container_image: "736116236436.dkr.ecr.us-east-1.amazonaws.com/php-img:latest"
     instance_profile_arn: "arn:aws:iam::736116236436:instance-profile/ecsInstanceRole"  # Replace with your instance profile ARN
+    subnet_ids:
+      - "subnet-095be323bd97dc9a4"
+      - "subnet-0c8e1eaaaff0a0726"
+      - "subnet-0e3db30d9fdcb6414"
+      - "subnet-04b85618616f2da9d"
+      - "subnet-0925766f7ff391b44"
+    security_group_ids:
+      - "sg-0a85d937517e6a7b1"
   tasks:
     - name: Ensure boto3 is installed
       pip:
@@ -61,20 +69,10 @@
         launch_type: EC2
         desired_count: 1  # Set the desired count to 1 to start one task
         state: present  # Specify the state of the service
-        deployment_configuration:
-          maximum_percent: 150
-          minimum_healthy_percent: 100
-        network_configuration:
-          awsvpc_configuration:
-            subnets:
-              - "subnet-095be323bd97dc9a4"
-              - "subnet-0c8e1eaaaff0a0726"
-              - "subnet-0e3db30d9fdcb6414"
-              - "subnet-04b85618616f2da9d"
-              - "subnet-0925766f7ff391b44"
-            security_groups:
-              - "sg-0a85d937517e6a7b1"
-            assign_public_ip: ENABLED  # Ensure public IP assignment
+        assign_public_ip: ENABLED  # Ensure public IP assignment
+        security_groups: "{{ security_group_ids }}"
+        subnets: "{{ subnet_ids }}"
+        wait: yes  # Wait for service deployment to complete
       register: service_result
 
     - name: Register ECS Service
