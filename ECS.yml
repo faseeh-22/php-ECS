@@ -72,7 +72,11 @@
         deployment_configuration:
           maximum_percent: 150
           minimum_healthy_percent: 100
-        wait: yes  # Wait for service deployment to complete
+        network_configuration:
+          awsvpc_configuration:
+            subnets: "{{ subnet_ids }}"
+            security_groups: "{{ security_group_ids }}"
+            assign_public_ip: ENABLED  # Ensure public IP assignment
       register: service_result
 
     - name: Register ECS Service
