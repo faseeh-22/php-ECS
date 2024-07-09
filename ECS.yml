@@ -24,8 +24,8 @@
     - name: Create ECS Cluster
       command: "aws ecs create-cluster --cluster-name {{ ecs_cluster_name }}"
       environment:
-        AWS_ACCESS_KEY_ID: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-        AWS_SECRET_ACCESS_KEY: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+        AWS_ACCESS_KEY_ID: "{{ AWS_ACCESS_KEY_ID }}"
+        AWS_SECRET_ACCESS_KEY: "{{ AWS_SECRET_ACCESS_KEY }}"
         AWS_DEFAULT_REGION: "{{ aws_region }}"
       ignore_errors: yes  # Ignore errors if the cluster already exists
 
@@ -34,15 +34,15 @@
         region: "{{ aws_region }}"
         family: "{{ ecs_task_definition_name }}"
         network_mode: awsvpc
-        access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
-        secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+        access_key: "{{ AWS_ACCESS_KEY_ID }}"
+        secret_key: "{{ AWS_SECRET_ACCESS_KEY }}"
         execution_role_arn: "arn:aws:iam::736116236436:role/ecsTaskExecutionRole"
         containers:
           - name: "{{ ecs_container_name }}"
             image: "{{ ecs_container_image }}"
             portMappings:
-              - containerPort: 80  # Assigning port 8081 to the container
-                hostPort: 80 
+              - containerPort: 80
+                hostPort: 80
             memoryReservation: 100
             memory: 250
             cpu: 100
@@ -58,31 +58,27 @@
         region: "{{ aws_region }}"
         cluster: "{{ ecs_cluster_name }}"
         service: "{{ ecs_service_name }}"
-        task_definition: "{{ ecs_task_definition_name }}"
+        task_definition: "{{ ecs_task_definition_name }}:{{ task_definition.taskDefinition.revision }}"
         launch_type: EC2
         desired_count: 1  # Set the desired count to 1 to start one task
+        wait: yes
         deployment_configuration:
           maximum_percent: 150
           minimum_healthy_percent: 100
         network_configuration:
-          subnets:
-            - "subnet-095be323bd97dc9a4"
-            - "subnet-0c8e1eaaaff0a0726"
-            - "subnet-0e3db30d9fdcb6414"
-            - "subnet-04b85618616f2da9d"
-            - "subnet-0925766f7ff391b44"
-          security_groups:
-            - "sg-0a85d937517e6a7b1"
+          awsvpcConfiguration:
+            subnets:
+              - "subnet-095be323bd97dc9a4"
+              - "subnet-0c8e1eaaaff0a0726"
+              - "subnet-0e3db30d9fdcb6414"
+              - "subnet-04b85618616f2da9d"
+              - "subnet-0925766f7ff391b44"
+            securityGroups:
+              - "sg-0a85d937517e6a7b1"
+            assignPublicIp: "ENABLED"
         state: present
       register: service_result
 
     - name: Register ECS Service
       debug:
         var: service_result
-
-
-
-
-
-
-
