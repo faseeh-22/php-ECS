@@ -19,7 +19,7 @@
       ecs_taskdefinition:
         state: present
         family: php-ECS5-task-definition
-        containers:    # Corrected parameter name
+        containers:
           - name: php-ECS5
             image: 736116236436.dkr.ecr.us-east-1.amazonaws.com/php-img:latest
             cpu: 256
@@ -41,7 +41,7 @@
         state: present
         name: php-ecs5-service
         cluster: test-cluster
-        task_definition: "{{ task_definition.taskDefinition.taskDefinitionArn }}"
+        task_definition: "{{ task_definition.taskDefinitionArn }}"  # Corrected attribute name
         desired_count: 1
         launch_type: EC2
         wait: yes
