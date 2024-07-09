@@ -19,7 +19,7 @@
       ecs_taskdefinition:
         state: present
         family: php-ECS5-task-definition
-        container_definitions:    # Corrected parameter name
+        containers:    # Corrected parameter name
           - name: php-ECS5
             image: 736116236436.dkr.ecr.us-east-1.amazonaws.com/php-img:latest
             cpu: 256
@@ -50,4 +50,4 @@
 
     - name: Output EC2 Instance Public IP
       debug:
-        msg: "Access your service at http://{{ hostvars[groups['tag_Name_ec2_instance'][0]]['public_ip_address'] }}"
+        msg: "Access your service at http://{{ hostvars[groups['ECS Instance - test-cluster'][0]]['public_ip_address'] }}"
