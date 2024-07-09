@@ -61,7 +61,7 @@
         task_definition: "{{ ecs_task_definition_name }}"
         launch_type: EC2
         desired_count: 1  # Set the desired count to 1 to start one task
-        wait: yes
+        state: present  # Specify the state of the service
         deployment_configuration:
           maximum_percent: 150
           minimum_healthy_percent: 100
