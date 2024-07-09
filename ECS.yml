@@ -69,14 +69,10 @@
         launch_type: EC2
         desired_count: 1  # Set the desired count to 1 to start one task
         state: present  # Specify the state of the service
-        deployment_configuration:
-          maximum_percent: 150
-          minimum_healthy_percent: 100
-        network_configuration:
-          awsvpc_configuration:
-            subnets: "{{ subnet_ids }}"
-            security_groups: "{{ security_group_ids }}"
-            assign_public_ip: ENABLED  # Ensure public IP assignment
+        assign_public_ip: ENABLED  # Ensure public IP assignment
+        security_groups: "{{ security_group_ids }}"
+        subnets: "{{ subnet_ids }}"
+        wait: yes  # Wait for service deployment to complete
       register: service_result
 
     - name: Register ECS Service
