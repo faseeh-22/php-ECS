@@ -9,7 +9,6 @@
     ecs_service_name: "php-ecs5-service"
     ecs_container_name: "php-ECS5"
     ecs_container_image: "736116236436.dkr.ecr.us-east-1.amazonaws.com/php-img:latest"
-    task_definition: null
     instance_profile_arn: "arn:aws:iam::736116236436:instance-profile/ecsInstanceRole"  # Replace with your instance profile ARN
   tasks:
     - name: Ensure boto3 is installed
@@ -65,7 +64,17 @@
         deployment_configuration:
           maximum_percent: 150
           minimum_healthy_percent: 100
-        wait: yes  # Wait for service deployment to complete
+        network_configuration:
+          awsvpc_configuration:
+            subnets:
+              - "subnet-095be323bd97dc9a4"
+              - "subnet-0c8e1eaaaff0a0726"
+              - "subnet-0e3db30d9fdcb6414"
+              - "subnet-04b85618616f2da9d"
+              - "subnet-0925766f7ff391b44"
+            security_groups:
+              - "sg-0a85d937517e6a7b1"
+            assign_public_ip: ENABLED  # Ensure public IP assignment
       register: service_result
 
     - name: Register ECS Service
