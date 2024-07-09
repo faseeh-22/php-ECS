@@ -42,7 +42,6 @@
             image: "{{ ecs_container_image }}"
             portMappings:
               - containerPort: 80
-                hostPort: 80
             memoryReservation: 100
             memory: 250
             cpu: 100
@@ -58,7 +57,7 @@
         region: "{{ aws_region }}"
         cluster: "{{ ecs_cluster_name }}"
         service: "{{ ecs_service_name }}"
-        task_definition: "{{ ecs_task_definition_name }}:{{ task_definition.taskDefinition.revision }}"
+        task_definition: "{{ ecs_task_definition_name }}"
         launch_type: EC2
         desired_count: 1  # Set the desired count to 1 to start one task
         wait: yes
@@ -66,19 +65,18 @@
           maximum_percent: 150
           minimum_healthy_percent: 100
         network_configuration:
-          awsvpcConfiguration:
-            subnets:
-              - "subnet-095be323bd97dc9a4"
-              - "subnet-0c8e1eaaaff0a0726"
-              - "subnet-0e3db30d9fdcb6414"
-              - "subnet-04b85618616f2da9d"
-              - "subnet-0925766f7ff391b44"
-            securityGroups:
-              - "sg-0a85d937517e6a7b1"
-            assignPublicIp: "ENABLED"
+          subnets:
+            - "subnet-095be323bd97dc9a4"
+            - "subnet-0c8e1eaaaff0a0726"
+            - "subnet-0e3db30d9fdcb6414"
+            - "subnet-04b85618616f2da9d"
+            - "subnet-0925766f7ff391b44"
+          security_groups:
+            - "sg-0a85d937517e6a7b1"
         state: present
       register: service_result
 
     - name: Register ECS Service
       debug:
         var: service_result
+    
