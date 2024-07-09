@@ -69,9 +69,9 @@
         launch_type: EC2
         desired_count: 1  # Set the desired count to 1 to start one task
         state: present  # Specify the state of the service
-        assign_public_ip: ENABLED  # Ensure public IP assignment
-        security_groups: "{{ security_group_ids }}"
-        subnets: "{{ subnet_ids }}"
+        deployment_configuration:
+          maximum_percent: 150
+          minimum_healthy_percent: 100
         wait: yes  # Wait for service deployment to complete
       register: service_result
 
